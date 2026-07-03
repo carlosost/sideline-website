@@ -1,4 +1,4 @@
-export function LetterReveal({ text, as: Tag = 'h1', className, baseDelay = 200 }) {
+export function LetterReveal({ text, as: Tag = 'h1', className, baseDelay = 0 }) {
   // Split into words so each word is wrapped in white-space:nowrap,
   // preventing mid-word line breaks while still allowing word-boundary wraps.
   const words = text.split(' ')
@@ -9,7 +9,7 @@ export function LetterReveal({ text, as: Tag = 'h1', className, baseDelay = 200 
       <span aria-hidden="true">
         {words.map((word, wi) => {
           const wordSpans = word.split('').map((char) => {
-            const delay = baseDelay + charIndex * 35
+            const delay = baseDelay + charIndex * 20
             charIndex++
             return (
               <span
@@ -21,7 +21,7 @@ export function LetterReveal({ text, as: Tag = 'h1', className, baseDelay = 200 
               </span>
             )
           })
-          const spaceDelay = baseDelay + charIndex * 35
+          const spaceDelay = baseDelay + charIndex * 20
           charIndex++
 
           return (

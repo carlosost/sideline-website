@@ -23,8 +23,8 @@ body {
 }
 
 .heading-dynamic {
-  font-variation-settings: "wght" var(--heading-weight, 700);
-  font-weight: 700;
+  font-variation-settings: "wght" 900;
+  font-weight: 900;
 }
 
 /* Letter-by-letter hard snap — steps(1, end) = binary on/off, zero interpolation */
@@ -37,6 +37,11 @@ body {
   display: inline-block;
   opacity: 0;
   animation: letter-appear 1ms steps(1, end) forwards;
+  animation-play-state: paused;
+}
+
+.is-visible .letter-char {
+  animation-play-state: running;
 }
 
 /* Section content reveal — 8 discrete steps (staircase, not smooth) */

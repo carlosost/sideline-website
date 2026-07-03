@@ -19,12 +19,14 @@ export function SectionDeclaration() {
           § 01 — THE DECLARATION
         </p>
 
-        <LetterReveal
-          text="LONG HUMANS. LONG OFFLINE."
-          as="h1"
+        <h1
           className="font-serif text-display-xl heading-dynamic text-iron leading-none mb-14"
-          baseDelay={300}
-        />
+          aria-label="Long Offline. Long Humans. Long Friday."
+        >
+          <LetterReveal text="LONG OFFLINE." as="div" baseDelay={0} />
+          <LetterReveal text="LONG HUMANS."  as="div" baseDelay={280} />
+          <LetterReveal text="LONG FRIDAY."  as="div" baseDelay={560} />
+        </h1>
 
         <p className="font-mono text-body-mono text-iron opacity-60 max-w-[58ch]">
           Everything that truly matters happens under a real sky, on a hard court,

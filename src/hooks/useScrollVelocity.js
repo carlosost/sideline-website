@@ -2,20 +2,28 @@ import { useEffect } from 'react'
 
 export function useScrollVelocity() {
   useEffect(() => {
-    let lastY    = window.scrollY
-    let lastTime = performance.now()
+    let lastY          = window.scrollY
+    let lastTime       = performance.now()
+    let smoothVelocity = 0
+    let appliedWeight  = 700
     let rafId
 
     function tick() {
       const now        = performance.now()
       const currentY   = window.scrollY
       const dt         = Math.max(now - lastTime, 1)
-      const pxPerFrame = Math.abs(currentY - lastY) / dt * 16
+      const raw        = Math.min(Math.abs(currentY - lastY) / dt * 16, 10)
 
-      const velocity = Math.min(pxPerFrame, 10)
-      const weight   = Math.round(700 + velocity * 20)
+      // Slow EMA — only reflects sustained scrolling, not per-frame jitter
+      smoothVelocity = smoothVelocity * 0.88 + raw * 0.12
 
-      document.documentElement.style.setProperty('--heading-weight', weight)
+      const weight = Math.round(700 + smoothVelocity * 20)
+
+      // Skip DOM write if value hasn't changed — prevents spurious layout work
+      if (weight !== appliedWeight) {
+        document.documentElement.style.setProperty('--heading-weight', weight)
+        appliedWeight = weight
+      }
 
       lastY    = currentY
       lastTime = now

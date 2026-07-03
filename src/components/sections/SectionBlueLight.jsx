@@ -6,7 +6,7 @@ export function SectionBlueLight() {
   return (
     <section
       ref={ref}
-      className={`relative min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 py-24 ${
+      className={`relative flex flex-col px-8 md:px-16 lg:px-24 pt-24 pb-32 ${
         isVisible ? 'section-dark is-visible' : 'bg-canvas text-iron'
       }`}
     >
