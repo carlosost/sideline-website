@@ -1,47 +1,45 @@
-export function GrainOverlay() {
-  return (
-    <>
-      <svg
-        aria-hidden="true"
-        style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}
-      >
-        <defs>
-          <filter
-            id="grain-filter"
-            x="0%"
-            y="0%"
-            width="100%"
-            height="100%"
-            colorInterpolationFilters="sRGB"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.68 0.72"
-              numOctaves="4"
-              seed="2"
-              stitchTiles="stitch"
-              result="noise"
-            />
-            <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise" />
-            <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay" result="blend" />
-            <feComposite in="blend" in2="SourceGraphic" operator="in" />
-          </filter>
-        </defs>
-      </svg>
+import { useEffect, useRef } from 'react'
 
-      <div
-        aria-hidden="true"
-        style={{
-          position:        'fixed',
-          inset:           0,
-          zIndex:          9999,
-          pointerEvents:   'none',
-          filter:          'url(#grain-filter)',
-          backgroundColor: '#888888',
-          opacity:         0.045,
-          mixBlendMode:    'multiply',
-        }}
-      />
-    </>
+export function GrainOverlay() {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const size = 256
+    const canvas = document.createElement('canvas')
+    canvas.width  = size
+    canvas.height = size
+    const ctx = canvas.getContext('2d')
+    const img = ctx.createImageData(size, size)
+
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = Math.floor(Math.random() * 255)
+      img.data[i]     = v
+      img.data[i + 1] = v
+      img.data[i + 2] = v
+      img.data[i + 3] = 255
+    }
+    ctx.putImageData(img, 0, 0)
+
+    el.style.backgroundImage = `url(${canvas.toDataURL()})`
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      style={{
+        position:        'fixed',
+        inset:           0,
+        zIndex:          9999,
+        pointerEvents:   'none',
+        backgroundSize:  '256px 256px',
+        backgroundRepeat:'repeat',
+        opacity:         0.18,
+        mixBlendMode:    'overlay',
+      }}
+    />
   )
 }
