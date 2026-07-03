@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --heading-weight: 700;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: #F9F6F0;
+  color: #1A1B1C;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.heading-dynamic {
+  font-variation-settings: "wght" var(--heading-weight, 700);
+  font-weight: 700;
+}
+
+/* Letter-by-letter hard snap — steps(1, end) = binary on/off, zero interpolation */
+@keyframes letter-appear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.letter-char {
+  display: inline-block;
+  opacity: 0;
+  animation: letter-appear 1ms steps(1, end) forwards;
+}
+
+/* Section content reveal — 8 discrete steps (staircase, not smooth) */
+.section-content {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s steps(8, end), transform 0.5s steps(8, end);
+}
+
+.is-visible .section-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section 02 dark bg — NO transition property intentional */
+.section-dark {
+  background-color: #1A1B1C;
+  color: #F9F6F0;
+}
